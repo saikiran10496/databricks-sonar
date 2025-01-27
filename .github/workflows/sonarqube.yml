@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-cov nbconvert
           
-      # Convert .ipynb notebooks to .py
+      # Convert Notebooks to Python scripts
       - name: Convert Notebooks to Python scripts
         run: |
           jupyter nbconvert --to script notebooks/*.ipynb
