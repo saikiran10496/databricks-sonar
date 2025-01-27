@@ -1,7 +1,13 @@
 # tests/test_notebook1.py
 
-import pytest
-from notebooks.notebook1 import your_function_to_test  # Import functions from your notebook1.py
+import sys
+import os
+
+# Add the root directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from notebooks.notebook1 import your_function_to_test  # Import your function here
+ notebook1.py
 
 
 def test_example_function():
