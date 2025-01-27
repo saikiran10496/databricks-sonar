@@ -32,17 +32,17 @@ jobs:
         run: |
           pytest --cov=notebooks --cov-report=xml
 
-      # Set up SonarScanner
-      - name: Set up SonarScanner
+      - name: Run SonarScanner
         run: |
+          # Ensure SonarScanner is installed (skip if already available)
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
           unzip sonar-scanner-cli-4.8.0.2856-linux.zip
           export PATH="$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin"
-
-      # Run SonarQube Scanner
-      - name: Run SonarQube Scanner
-        env:
-          SONAR_HOST_URL: http://your-sonarqube-server-url
-          SONAR_LOGIN: ${{ secrets.SONARQUBE_TOKEN }}
-        run: |
-          sonar-scanner
+          
+          # Run SonarScanner with the correct configuration
+          sonar-scanner -Dsonar.projectKey=your_project_key \
+                        -Dsonar.projectName=your_project_name \
+                        -Dsonar.projectVersion=1.0 \
+                        -Dsonar.sources=notebooks \
+                        -Dsonar.host.url=http://your-ec2-public-ip:9000 \
+                        -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
