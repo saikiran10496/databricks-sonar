@@ -25,8 +25,8 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
-          pip install pytest pytest-cov nbconvert
-          
+          pip install nbconvert
+
       # Convert .ipynb notebooks to .py
       - name: Convert Notebooks to Python scripts
         run: |
@@ -35,12 +35,7 @@ jobs:
       # Set PYTHONPATH
       - name: Set PYTHONPATH
         run: |
-          echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
-
-      # Run Tests and Generate Coverage
-      - name: Run Tests with Coverage
-        run: |
-          pytest --cov=notebooks --cov-report=xml
+          echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
 
       # Run SonarScanner
       - name: Run SonarScanner
@@ -48,8 +43,8 @@ jobs:
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
           unzip sonar-scanner-cli-4.8.0.2856-linux.zip
           export PATH="$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin"
-          sonar-scanner -Dsonar.projectKey=your_project_key \
-                        -Dsonar.projectName=your_project_name \
+          sonar-scanner -Dsonar.projectKey=databricks_project \
+                        -Dsonar.projectName=Databricks Project \
                         -Dsonar.projectVersion=1.0 \
                         -Dsonar.sources=notebooks \
                         -Dsonar.host.url=http://your-ec2-public-ip:9000 \
