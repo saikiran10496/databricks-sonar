@@ -1,5 +1,5 @@
 import pytest
-from notebook1 import add_numbers, subtract_numbers  # Correct the import path
+from notebooks.notebook1 import add_numbers, subtract_numbers  # Correct the import path
 
 def test_add_numbers():
     assert add_numbers(3, 2) == 5
