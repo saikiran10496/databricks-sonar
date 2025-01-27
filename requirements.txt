@@ -1,0 +1,20 @@
+# Core libraries for Databricks workflows
+pandas
+numpy
+pyspark
+matplotlib
+scikit-learn
+
+# Testing libraries
+pytest
+pytest-cov
+
+# Linting and code quality tools
+pylint
+flake8
+
+# Databricks CLI for automation
+databricks-cli
+
+# Optional: If you're working with Azure Databricks
+azure-storage-blob
