@@ -1,7 +1,11 @@
-# tests/test_notebook1.py
+import sys
+import os
+
+# Add the notebooks directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'notebooks')))
 
 # Import the functions from notebook1
-from notebooks.notebook1 import add_numbers, subtract_numbers
+from notebook1 import add_numbers, subtract_numbers
 
 # Test for add_numbers function
 def test_add_numbers():
