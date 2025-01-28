@@ -44,8 +44,7 @@ jobs:
           
       - name: Run Tests with Coverage
         run: |
-          pytest --cov=converted_notebooks --cov-report=xml
-
+          pytest tests --cov=notebooks --cov-report=xml
 
       # Run SonarScanner
       - name: Run SonarScanner
