@@ -78,9 +78,14 @@ jobs:
 
       # Configure Databricks CLI for Dev
       - name: Configure Databricks CLI for Dev
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_DEV_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_DEV_TOKEN }}
         run: |
           mkdir -p ~/.databricks
-          echo -e "[DEFAULT]\nhost = ${{ secrets.DATABRICKS_DEV_HOST }}\ntoken = ${{ secrets.DATABRICKS_DEV_TOKEN }}" > ~/.databricks/config
+          echo "[DEFAULT]" > ~/.databricks/config
+          echo "host = $DATABRICKS_HOST" >> ~/.databricks/config
+          echo "token = $DATABRICKS_TOKEN" >> ~/.databricks/config
 
       - name: Deploy Notebooks to Dev Environment
         env:
@@ -111,9 +116,14 @@ jobs:
 
       # Configure Databricks CLI for Prod
       - name: Configure Databricks CLI for Prod
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
         run: |
           mkdir -p ~/.databricks
-          echo -e "[DEFAULT]\nhost = ${{ secrets.DATABRICKS_PROD_HOST }}\ntoken = ${{ secrets.DATABRICKS_PROD_TOKEN }}" > ~/.databricks/config
+          echo "[DEFAULT]" > ~/.databricks/config
+          echo "host = $DATABRICKS_HOST" >> ~/.databricks/config
+          echo "token = $DATABRICKS_TOKEN" >> ~/.databricks/config
 
       - name: Deploy Notebooks to Prod Environment
         env:
