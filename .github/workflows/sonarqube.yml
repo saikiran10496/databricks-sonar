@@ -62,6 +62,40 @@ jobs:
                         -Dsonar.host.url=http://20.55.75.25:9000 \
                         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
+  deployToDatabricksDev:
+    runs-on: windows-latest
+    needs: sonarQubeAnalysis
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Install Databricks CLI
+      - name: Install Databricks CLI
+        run: |
+          pip install databricks-cli
+          az extension add --name databricks
+
+      # Install Az PowerShell Module
+      - name: Install Az PowerShell Module
+        shell: pwsh
+        run: |
+          Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
+
+      # PowerShell Script for Authentication
+      - name: Authenticate with Azure using PowerShell
+        shell: pwsh
+        run: |
+          $secureSecret = ConvertTo-SecureString "${{ secrets.AZURE_CLIENT_SECRET }}" -AsPlainText -Force
+          $creds = New-Object System.Management.Automation.PSCredential("${{ secrets.AZURE_CLIENT_ID }}", $secureSecret)
+          Connect-AzAccount -ServicePrincipal -TenantId "${{ secrets.AZURE_TENANT_ID }}" -Credential $creds
+
+      - name: Deploy Notebooks to Dev Environment
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_DEV_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_DEV_TOKEN }}
+        run: |
+          databricks workspace import_dir notebooks /Workspace/notebooks
+
   deployToDatabricksProd:
     runs-on: windows-latest
     needs: deployToDatabricksDev
