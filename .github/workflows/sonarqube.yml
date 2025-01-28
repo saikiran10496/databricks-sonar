@@ -57,5 +57,7 @@ jobs:
                         -Dsonar.projectName=DatabricksProject \
                         -Dsonar.projectVersion=1.0 \
                         -Dsonar.sources=notebooks \
+                        -Dsonar.python.coverage.reportPaths=coverage.xml \
+                        -Dsonar.python.version=3.x \
                         -Dsonar.host.url=http://20.55.75.25:9000 \
                         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
