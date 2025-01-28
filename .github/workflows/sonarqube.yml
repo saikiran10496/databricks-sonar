@@ -76,6 +76,14 @@ jobs:
           pip install databricks-cli
           az extension add --name databricks
 
+      # Configure Databricks CLI
+      - name: Configure Databricks CLI
+        run: |
+          databricks configure --token <<-EOF
+          ${{ secrets.DATABRICKS_HOST }}
+          ${{ secrets.DATABRICKS_TOKEN }}
+          EOF
+
       - name: Deploy Notebooks to Dev Environment
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -102,6 +110,14 @@ jobs:
         run: |
           pip install databricks-cli
           az extension add --name databricks
+
+      # Configure Databricks CLI
+      - name: Configure Databricks CLI
+        run: |
+          databricks configure --token <<-EOF
+          ${{ secrets.DATABRICKS_HOST }}
+          ${{ secrets.DATABRICKS_TOKEN }}
+          EOF
 
       - name: Deploy Notebooks to Prod Environment
         env:
