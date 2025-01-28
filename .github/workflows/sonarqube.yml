@@ -30,9 +30,8 @@ jobs:
       # Convert .ipynb notebooks to .py
       - name: Convert Notebooks to Python scripts
         run: |
-          mkdir -p notebooks/scripts  # Ensure the directory exists
-          jupyter nbconvert --to script notebooks/notebook1.ipynb --output notebooks/scripts/notebook1
-          ls notebooks/scripts  # List files to confirm conversion
+          jupyter nbconvert --to script notebooks/*.ipynb --output-dir notebooks --output notebook1.py
+          ls notebooks  # List files in notebooks directory to confirm conversion
       - name: Set PYTHONPATH
         run: |
           echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
