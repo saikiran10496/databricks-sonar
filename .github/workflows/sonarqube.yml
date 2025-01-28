@@ -1,4 +1,4 @@
-name: SonarQube Analysis
+name: SonarQube Analysis and Deployment
 
 on:
   push:
@@ -30,18 +30,19 @@ jobs:
       - name: Convert Notebooks to Python scripts
         run: |
           jupyter nbconvert --to script notebooks/*.ipynb --output-dir notebooks
-
           # Rename .txt files to .py
           for file in notebooks/*.txt; do
             mv "$file" "${file%.txt}.py"
           done
-          
           # Verify the result
           ls notebooks
+
+      # Set PYTHONPATH
       - name: Set PYTHONPATH
         run: |
           echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
-          
+
+      # Run Tests with Coverage
       - name: Run Tests with Coverage
         run: |
           pytest tests --cov=notebooks --cov-report=xml
@@ -60,8 +61,39 @@ jobs:
                         -Dsonar.python.version=3.x \
                         -Dsonar.host.url=http://20.55.75.25:9000 \
                         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-                        
 
-          
-                        
-                             
+  deployToDatabricksDev:
+    runs-on: ubuntu-latest
+    needs: sonarQubeAnalysis
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Deploy Notebooks to Dev Environment
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          DEV_WORKSPACE_NAME: ${{ secrets.DEV_WORKSPACE_NAME }}
+          DEV_RESOURCE_GROUP: ${{ secrets.DEV_RESOURCE_GROUP }}
+        run: |
+          az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+          az databricks workspace import --workspace-name $DEV_WORKSPACE_NAME --resource-group $DEV_RESOURCE_GROUP --path notebooks --format DBC
+
+  deployToDatabricksProd:
+    runs-on: ubuntu-latest
+    needs: deployToDatabricksDev
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Deploy Notebooks to Prod Environment
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          PROD_WORKSPACE_NAME: ${{ secrets.PROD_WORKSPACE_NAME }}
+          PROD_RESOURCE_GROUP: ${{ secrets.PROD_RESOURCE_GROUP }}
+        run: |
+          az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+          az databricks workspace import --workspace-name $PROD_WORKSPACE_NAME --resource-group $PROD_RESOURCE_GROUP --path notebooks --format DBC
