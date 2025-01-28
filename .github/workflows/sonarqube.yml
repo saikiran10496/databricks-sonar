@@ -55,8 +55,10 @@ jobs:
           sonar-scanner -Dsonar.projectKey=databricks_project \
                         -Dsonar.projectName=DatabricksProject \
                         -Dsonar.projectVersion=1.0 \
-                        -Dsonar.sources=notebooks,tests \
+                        -Dsonar.sources=notebooks \
                         -Dsonar.tests=tests \
+                        -Dsonar.exclusions=**/*.py \
+                        -Dsonar.test.inclusions=tests/**/*.py \
                         -Dsonar.python.coverage.reportPaths=coverage.xml \
                         -Dsonar.python.version=3.x \
                         -Dsonar.host.url=http://20.55.75.25:9000 \
