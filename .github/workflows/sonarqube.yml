@@ -24,7 +24,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
-          pip install nbconvert
+          pip install nbconvert pytest pytest-cov coverage
 
       # Convert .ipynb notebooks to .py
       - name: Convert Notebooks to Python scripts
@@ -41,6 +41,11 @@ jobs:
       - name: Set PYTHONPATH
         run: |
           echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
+          
+      - name: Run Tests with Coverage
+        run: |
+          pytest --cov=converted_notebooks --cov-report=xml
+
 
       # Run SonarScanner
       - name: Run SonarScanner
