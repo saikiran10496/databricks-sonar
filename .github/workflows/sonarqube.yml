@@ -31,7 +31,7 @@ jobs:
       - name: Convert Notebooks to Python scripts
         run: |
           jupyter nbconvert --to script notebooks/*.ipynb
-
+          ls notebooks  # List files in notebooks directory to confirm conversion
       # Set PYTHONPATH
       - name: Set PYTHONPATH
         run: |
