@@ -47,5 +47,5 @@ jobs:
                         -Dsonar.projectName=Databricks Project \
                         -Dsonar.projectVersion=1.0 \
                         -Dsonar.sources=notebooks \
-                        -Dsonar.host.url=http://your-ec2-public-ip:9000 \
+                        -Dsonar.host.url=http://20.55.75.25:9000 \
                         -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
