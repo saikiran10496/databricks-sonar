@@ -76,13 +76,11 @@ jobs:
           pip install databricks-cli
           az extension add --name databricks
 
-      # Configure Databricks CLI
-      - name: Configure Databricks CLI
+      # Configure Databricks CLI for Dev
+      - name: Configure Databricks CLI for Dev
         run: |
-          databricks configure --token <<-EOF
-          ${{ secrets.DATABRICKS_HOST }}
-          ${{ secrets.DATABRICKS_TOKEN }}
-          EOF
+          mkdir -p ~/.databricks
+          echo -e "[DEFAULT]\nhost = ${{ secrets.DATABRICKS_DEV_HOST }}\ntoken = ${{ secrets.DATABRICKS_DEV_TOKEN }}" > ~/.databricks/config
 
       - name: Deploy Notebooks to Dev Environment
         env:
@@ -111,13 +109,11 @@ jobs:
           pip install databricks-cli
           az extension add --name databricks
 
-      # Configure Databricks CLI
-      - name: Configure Databricks CLI
+      # Configure Databricks CLI for Prod
+      - name: Configure Databricks CLI for Prod
         run: |
-          databricks configure --token <<-EOF
-          ${{ secrets.DATABRICKS_HOST }}
-          ${{ secrets.DATABRICKS_TOKEN }}
-          EOF
+          mkdir -p ~/.databricks
+          echo -e "[DEFAULT]\nhost = ${{ secrets.DATABRICKS_PROD_HOST }}\ntoken = ${{ secrets.DATABRICKS_PROD_TOKEN }}" > ~/.databricks/config
 
       - name: Deploy Notebooks to Prod Environment
         env:
