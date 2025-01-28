@@ -62,10 +62,9 @@ jobs:
                         -Dsonar.host.url=http://20.55.75.25:9000 \
                         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-  deployToDatabricksDev:
+    deployToDatabricksDev:
     runs-on: ubuntu-latest
     needs: sonarQubeAnalysis
-    environment: DEV_WORKSPACE_NAME
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -82,8 +81,9 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_DEV_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_DEV_TOKEN }}
         run: |
-          mkdir -p ~/.databricks
-          echo -e "[DEFAULT]\nhost = $DATABRICKS_HOST\ntoken = $DATABRICKS_TOKEN" > ~/.databricks.cfg
+          echo "[DEFAULT]" > ~/.databrickscfg
+          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
+          echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
 
       - name: Deploy Notebooks to Dev Environment
         env:
@@ -91,8 +91,6 @@ jobs:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          DEV_WORKSPACE_NAME: ${{ secrets.DEV_WORKSPACE_NAME }}
-          DEV_RESOURCE_GROUP: ${{ secrets.DEV_RESOURCE_GROUP }}
         run: |
           az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
           az account set --subscription $AZURE_SUBSCRIPTION_ID
@@ -101,7 +99,6 @@ jobs:
   deployToDatabricksProd:
     runs-on: ubuntu-latest
     needs: deployToDatabricksDev
-    environment: PROD_WORKSPACE_NAME
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -118,8 +115,9 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
         run: |
-          mkdir -p ~/.databricks
-          echo -e "[DEFAULT]\nhost = $DATABRICKS_HOST\ntoken = $DATABRICKS_TOKEN" > ~/.databricks.cfg
+          echo "[DEFAULT]" > ~/.databrickscfg
+          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
+          echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
 
       - name: Deploy Notebooks to Prod Environment
         env:
@@ -127,8 +125,6 @@ jobs:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          PROD_WORKSPACE_NAME: ${{ secrets.PROD_WORKSPACE_NAME }}
-          PROD_RESOURCE_GROUP: ${{ secrets.PROD_RESOURCE_GROUP }}
         run: |
           az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
           az account set --subscription $AZURE_SUBSCRIPTION_ID
