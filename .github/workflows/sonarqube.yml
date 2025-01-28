@@ -30,7 +30,6 @@ jobs:
       # Convert .ipynb notebooks to .py
       - name: Convert Notebooks to Python scripts
         run: |
-          |
           mkdir -p notebooks/scripts  # Ensure the directory exists
           jupyter nbconvert --to script notebooks/notebook1.ipynb --output notebooks/scripts/notebook1
           ls notebooks/scripts  # List files to confirm conversion
