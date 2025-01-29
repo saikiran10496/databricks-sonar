@@ -39,9 +39,9 @@ jobs:
           $creds = New-Object System.Management.Automation.PSCredential("${{ secrets.AZURE_CLIENT_ID }}", $secureSecret)
           Connect-AzAccount -ServicePrincipal -TenantId "${{ secrets.AZURE_TENANT_ID }}" -Credential $creds
 
-      - name: Deploy Notebooks to ${{ inputs.deploy_to }} Environment
+      - name: Deploy to Databricks
         env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ github.ref == 'refs/heads/main' && secrets.DATABRICKS_PROD_HOST || secrets.DATABRICKS_DEV_HOST }}
+          DATABRICKS_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.DATABRICKS_PROD_TOKEN || secrets.DATABRICKS_DEV_TOKEN }}
         run: |
           databricks workspace import_dir --overwrite notebooks /Workspace/notebooks
