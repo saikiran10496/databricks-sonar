@@ -12,48 +12,41 @@ on:
       databricks_token:
         required: true
         type: string
+      azure_client_secret:
+        required: true
+        type: string
+      azure_client_id:
+        required: true
+        type: string
+      azure_tenant_id:
+        required: true
+        type: string
 
 jobs:
   deploy:
     runs-on: windows-latest
-    environment: DEV_WORKSPACE_NAME
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Install Az PowerShell Module
       - name: Install Az PowerShell Module
         shell: pwsh
         run: |
           Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
           Get-InstalledModule -Name Az  # Verify installation
 
-      # Install Databricks CLI
       - name: Install Databricks CLI
         run: |
           pip install databricks-cli
           az extension add --name databricks
-      - name: Debug Azure Secrets
-        shell: pwsh
-        run: |
-          Write-Host "Checking Secrets..."
-          if ("${{ secrets.AZURE_CLIENT_SECRET }}" -eq "") { Write-Error "AZURE_CLIENT_SECRET is empty!" ; exit 1 }
-          if ("${{ secrets.AZURE_CLIENT_ID }}" -eq "") { Write-Error "AZURE_CLIENT_ID is empty!" ; exit 1 }
-          if ("${{ secrets.AZURE_TENANT_ID }}" -eq "") { Write-Error "AZURE_TENANT_ID is empty!" ; exit 1 }
 
-          
       - name: Authenticate with Azure using PowerShell
         shell: pwsh
         run: |
-          if ("${{ secrets.AZURE_CLIENT_SECRET }}" -eq "") {
-            Write-Error "AZURE_CLIENT_SECRET is empty!"
-            exit 1
-          }
-          $secureSecret = ConvertTo-SecureString "${{ secrets.AZURE_CLIENT_SECRET }}" -AsPlainText -Force
-          $creds = New-Object System.Management.Automation.PSCredential("${{ secrets.AZURE_CLIENT_ID }}", $secureSecret)
-          Connect-AzAccount -ServicePrincipal -TenantId "${{ secrets.AZURE_TENANT_ID }}" -Credential $creds
-      
+          $secureSecret = ConvertTo-SecureString "${{ inputs.azure_client_secret }}" -AsPlainText -Force
+          $creds = New-Object System.Management.Automation.PSCredential("${{ inputs.azure_client_id }}", $secureSecret)
+          Connect-AzAccount -ServicePrincipal -TenantId "${{ inputs.azure_tenant_id }}" -Credential $creds
 
       - name: Deploy Notebooks to ${{ inputs.deploy_to }} Environment
         env:
