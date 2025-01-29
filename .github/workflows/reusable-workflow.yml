@@ -25,7 +25,7 @@ on:
 jobs:
   deploy:
     runs-on: windows-latest
-    environment: DEV_WORKSPACE_NAME
+    environment: ${{ inputs.deploy_to }}
 
     steps:
       - name: Checkout Repository
@@ -41,6 +41,7 @@ jobs:
         run: |
           pip install databricks-cli
           az extension add --name databricks
+
       - name: Debug Azure Secrets
         shell: pwsh
         run: |
