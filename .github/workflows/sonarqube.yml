@@ -56,21 +56,21 @@ jobs:
   deployToDatabricksDev:
     needs: sonarQubeAnalysis
     uses: ./.github/workflows/reusable-workflow.yml
-    with:
+    secrets:
       databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}
       databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}
       azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
       azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
       azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-    secrets: inherit
+    
 
   deployToDatabricksProd:
     needs: deployToDatabricksDev
     uses: ./.github/workflows/reusable-workflow.yml
-    with:
+    secrets:
       databricks_host: ${{ secrets.DATABRICKS_PROD_HOST }}
       databricks_token: ${{ secrets.DATABRICKS_PROD_TOKEN }}
       azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
       azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
       azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-    secrets: inherit
+    
