@@ -69,7 +69,9 @@ jobs:
       deploy_to: "Dev"
       databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}
       databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}
-    secrets: inherit
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
 
   deployToDatabricksProd:
     needs: deployToDatabricksDev
@@ -78,4 +80,6 @@ jobs:
       deploy_to: "Prod"
       databricks_host: ${{ secrets.DATABRICKS_PROD_HOST }}
       databricks_token: ${{ secrets.DATABRICKS_PROD_TOKEN }}
-    secrets: inherit
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
