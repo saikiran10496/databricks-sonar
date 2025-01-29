@@ -10,44 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Set up Python
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: '3.x'
 
-      # Install dependencies
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
           pip install nbconvert pytest pytest-cov coverage
 
-      # Convert .ipynb notebooks to .py
       - name: Convert Notebooks to Python scripts
         run: |
           jupyter nbconvert --to script notebooks/*.ipynb --output-dir notebooks
-          # Rename .txt files to .py
           for file in notebooks/*.txt; do
             mv "$file" "${file%.txt}.py"
           done
-          # Verify the result
           ls notebooks
 
-      # Set PYTHONPATH
       - name: Set PYTHONPATH
         run: |
           echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
 
-      # Run Tests with Coverage
       - name: Run Tests with Coverage
         run: |
           pytest tests --cov=notebooks --cov-report=xml
 
-      # Run SonarScanner
       - name: Run SonarScanner
         run: |
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
@@ -67,11 +58,12 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "Dev"
-      databricks_host: ${{ secrets.DATABRICKS_DEV_HOST-DEV_WORKSPACE_NAME }}
-      databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN-DEV_WORKSPACE_NAME }}
-      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET-DEV_WORKSPACE_NAME }}
-      azure_client_id: ${{ secrets.AZURE_CLIENT_ID-DEV_WORKSPACE_NAME }}
-      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID-DEV_WORKSPACE_NAME }}
+      databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}
+      databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+    secrets: inherit
 
   deployToDatabricksProd:
     needs: deployToDatabricksDev
@@ -83,3 +75,4 @@ jobs:
       azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
       azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
       azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+    secrets: inherit
