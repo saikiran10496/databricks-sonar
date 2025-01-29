@@ -59,7 +59,7 @@ jobs:
     with:
       deploy_to: "DEV_WORKSPACE_NAME"
       databricks_host: https://adb-1953896918179146.6.azuredatabricks.net
-      databricks_token: ${{ DATABRICKS_DEV_TOKEN }}
+      databricks_token: $(DATABRICKS_DEV_TOKEN)
       azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
       azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
       azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
