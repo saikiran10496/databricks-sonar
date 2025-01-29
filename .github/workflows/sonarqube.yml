@@ -58,11 +58,11 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "Dev"
-      databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}
-      databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}
-      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
-      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      databricks_host: ${{ needs.sonarQubeAnalysis.outputs.databricks_dev_host }} # Example - if you need to pass output
+      databricks_token: ${{ needs.sonarQubeAnalysis.outputs.databricks_dev_token }} # Example - if you need to pass output
+      azure_client_secret: ${{ needs.sonarQubeAnalysis.outputs.azure_client_secret }} # Example - if you need to pass output
+      azure_client_id: ${{ needs.sonarQubeAnalysis.outputs.azure_client_id }} # Example - if you need to pass output
+      azure_tenant_id: ${{ needs.sonarQubeAnalysis.outputs.azure_tenant_id }} # Example - if you need to pass output
     secrets:
       DATABRICKS_DEV_HOST: ${{ secrets.DATABRICKS_DEV_HOST }}
       DATABRICKS_DEV_TOKEN: ${{ secrets.DATABRICKS_DEV_TOKEN }}
@@ -70,17 +70,16 @@ jobs:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-
   deployToDatabricksProd:
     needs: deployToDatabricksDev
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "Prod"
-      databricks_host: ${{ secrets.DATABRICKS_PROD_HOST }}
-      databricks_token: ${{ secrets.DATABRICKS_PROD_TOKEN }}
-      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
-      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      databricks_host: ${{ needs.deployToDatabricksDev.outputs.databricks_prod_host }} # Example - if you need to pass output from previous job
+      databricks_token: ${{ needs.deployToDatabricksDev.outputs.databricks_prod_token }} # Example - if you need to pass output from previous job
+      azure_client_secret: ${{ needs.deployToDatabricksDev.outputs.azure_client_secret }} # Example - if you need to pass output from previous job
+      azure_client_id: ${{ needs.deployToDatabricksDev.outputs.azure_client_id }} # Example - if you need to pass output from previous job
+      azure_tenant_id: ${{ needs.deployToDatabricksDev.outputs.azure_tenant_id }} # Example - if you need to pass output from previous job
     secrets:
       DATABRICKS_PROD_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
       DATABRICKS_PROD_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
