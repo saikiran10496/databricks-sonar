@@ -25,6 +25,7 @@ on:
 jobs:
   deploy:
     runs-on: windows-latest
+    environment: DEV_WORKSPACE_NAME
 
     steps:
       - name: Checkout Repository
@@ -40,6 +41,15 @@ jobs:
         run: |
           pip install databricks-cli
           az extension add --name databricks
+      - name: Debug Azure Secrets
+        shell: pwsh
+        run: |
+          Write-Host "Deploying to ${{ inputs.deploy_to }} environment"
+          Write-Host "DATABRICKS_HOST: ${{ inputs.databricks_host }}"
+          Write-Host "DATABRICKS_TOKEN: ${{ inputs.databricks_token }}"
+          Write-Host "AZURE_CLIENT_SECRET: ${{ inputs.azure_client_secret }}"
+          Write-Host "AZURE_CLIENT_ID: ${{ inputs.azure_client_id }}"
+          Write-Host "AZURE_TENANT_ID: ${{ inputs.azure_tenant_id }}"
 
       - name: Authenticate with Azure using PowerShell
         shell: pwsh
