@@ -21,23 +21,26 @@ on:
       azure_tenant_id:
         required: true
         type: string
-
+    secrets: # This is the crucial part: declare the secrets
+      DATABRICKS_DEV_HOST:
+        required: true # Or false, depending on if it's optional
+      DATABRICKS_DEV_TOKEN:
+        required: true
+      AZURE_CLIENT_SECRET:
+        required: true
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      DATABRICKS_PROD_HOST:
+        required: true
+      DATABRICKS_PROD_TOKEN:
+        required: true
 jobs:
   deploy:
     runs-on: windows-latest
     environment: DEV_WORKSPACE_NAME
-    steps:  # The secrets are now accessible within the steps
-      - name: Debug Secrets (Example - for debugging only)
-        shell: pwsh
-        run: |
-          Write-Host "DATABRICKS_DEV_HOST: $env:DATABRICKS_DEV_HOST"
-          Write-Host "DATABRICKS_DEV_TOKEN: $env:DATABRICKS_DEV_TOKEN"
-          Write-Host "AZURE_CLIENT_SECRET: $env:AZURE_CLIENT_SECRET"
-          Write-Host "AZURE_CLIENT_ID: $env:AZURE_CLIENT_ID"
-          Write-Host "AZURE_TENANT_ID: $env:AZURE_TENANT_ID"
-          Write-Host "DATABRICKS_PROD_HOST: $env:DATABRICKS_PROD_HOST"
-          Write-Host "DATABRICKS_PROD_TOKEN: $env:DATABRICKS_PROD_TOKEN"
-      
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -45,32 +48,23 @@ jobs:
         shell: pwsh
         run: |
           Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
-          Get-InstalledModule -Name Az  # Verify installation
+          Get-InstalledModule -Name Az
 
       - name: Install Databricks CLI
         run: |
           pip install databricks-cli
           az extension add --name databricks
-      - name: Debug Azure Secrets
-        shell: pwsh
-        run: |
-          Write-Host "Deploying to ${{ inputs.deploy_to }} environment"
-          Write-Host "DATABRICKS_HOST: ${{ inputs.databricks_host }}"
-          Write-Host "DATABRICKS_TOKEN: ${{ inputs.databricks_token }}"
-          Write-Host "AZURE_CLIENT_SECRET: ${{ inputs.azure_client_secret }}"
-          Write-Host "AZURE_CLIENT_ID: ${{ inputs.azure_client_id }}"
-          Write-Host "AZURE_TENANT_ID: ${{ inputs.azure_tenant_id }}"
 
       - name: Authenticate with Azure using PowerShell
         shell: pwsh
         run: |
-          $secureSecret = ConvertTo-SecureString "${{ inputs.azure_client_secret }}" -AsPlainText -Force
-          $creds = New-Object System.Management.Automation.PSCredential("${{ inputs.azure_client_id }}", $secureSecret)
-          Connect-AzAccount -ServicePrincipal -TenantId "${{ inputs.azure_tenant_id }}" -Credential $creds
+          $secureSecret = ConvertTo-SecureString "${{ secrets.AZURE_CLIENT_SECRET }}" -AsPlainText -Force
+          $creds = New-Object System.Management.Automation.PSCredential("${{ secrets.AZURE_CLIENT_ID }}", $secureSecret)
+          Connect-AzAccount -ServicePrincipal -TenantId "${{ secrets.AZURE_TENANT_ID }}" -Credential $creds
 
       - name: Deploy Notebooks to ${{ inputs.deploy_to }} Environment
         env:
-          DATABRICKS_HOST: ${{ inputs.databricks_host }}
-          DATABRICKS_TOKEN: ${{ inputs.databricks_token }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_DEV_HOST }} # Access secrets here
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_DEV_TOKEN }} # Access secrets here
         run: |
           databricks workspace import_dir --overwrite notebooks /Workspace/notebooks
