@@ -55,7 +55,7 @@ jobs:
 
   deployToDatabricksDev:
     needs: sonarQubeAnalysis
-    uses: ./databricks-sonar/.github/workflows/reusable-workflow.yml
+    uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "DEV_WORKSPACE_NAME" 
     secrets:
@@ -68,7 +68,7 @@ jobs:
 
   deployToDatabricksProd:
     needs: deployToDatabricksDev
-    uses: ./databricks-sonar/.github/workflows/reusable-workflow.yml
+    uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "DEV_WORKSPACE_NAME" 
     secrets:
