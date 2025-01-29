@@ -58,7 +58,7 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "DEV_WORKSPACE_NAME"
-      databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}
+      databricks_host: https://adb-1953896918179146.6.azuredatabricks.net
       databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}
       azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
       azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
