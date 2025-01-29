@@ -57,7 +57,7 @@ jobs:
     needs: sonarQubeAnalysis
     uses: ./.github/workflows/reusable-workflow.yml
     with:
-      deploy_to: "DEV_WORKSPACE_NAME"
+      #deploy_to: "DEV_WORKSPACE_NAME"
       databricks_host: https://adb-1953896918179146.6.azuredatabricks.net
       databricks_token: $(DATABRICKS_DEV_TOKEN)
       azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -69,7 +69,7 @@ jobs:
     needs: deployToDatabricksDev
     uses: ./.github/workflows/reusable-workflow.yml
     with:
-      deploy_to: "DEV_WORKSPACE_NAME"
+      #deploy_to: "DEV_WORKSPACE_NAME"
       databricks_host: ${{ secrets.DATABRICKS_PROD_HOST }}
       databricks_token: ${{ secrets.DATABRICKS_PROD_TOKEN }}
       azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
