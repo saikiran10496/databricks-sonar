@@ -67,11 +67,11 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "Dev"
-      databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}
-      databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}
-      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
-      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      databricks_host: ${{ secrets.DATABRICKS_DEV_HOST-DEV_WORKSPACE_NAME }}
+      databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN-DEV_WORKSPACE_NAME }}
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET-DEV_WORKSPACE_NAME }}
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID-DEV_WORKSPACE_NAME }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID-DEV_WORKSPACE_NAME }}
 
   deployToDatabricksProd:
     needs: deployToDatabricksDev
