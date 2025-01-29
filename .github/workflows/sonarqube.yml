@@ -62,7 +62,6 @@ jobs:
                         -Dsonar.host.url=http://20.55.75.25:9000 \
                         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-  
   deployToDatabricksDev:
     needs: sonarQubeAnalysis
     uses: ./.github/workflows/reusable-workflow.yml
