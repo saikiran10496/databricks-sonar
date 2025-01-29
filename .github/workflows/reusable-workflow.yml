@@ -41,7 +41,7 @@ jobs:
 
       - name: Deploy to Databricks
         env:
-          DATABRICKS_HOST: ${{ github.ref == 'refs/heads/main' && secrets.DATABRICKS_PROD_HOST || secrets.DATABRICKS_DEV_HOST }}
-          DATABRICKS_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.DATABRICKS_PROD_TOKEN || secrets.DATABRICKS_DEV_TOKEN }}
+          DATABRICKS_HOST: ${{ inputs.deploy_to == 'PROD' && secrets.DATABRICKS_PROD_HOST || secrets.DATABRICKS_DEV_HOST }}
+          DATABRICKS_TOKEN: ${{ inputs.deploy_to == 'PROD' && secrets.DATABRICKS_PROD_TOKEN || secrets.DATABRICKS_DEV_TOKEN }}
         run: |
           databricks workspace import_dir --overwrite notebooks /Workspace/notebooks
