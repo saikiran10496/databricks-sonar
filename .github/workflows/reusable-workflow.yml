@@ -33,6 +33,14 @@ jobs:
         run: |
           pip install databricks-cli
           az extension add --name databricks
+      - name: Debug Azure Secrets
+        shell: pwsh
+        run: |
+          Write-Host "Checking Secrets..."
+          if ("${{ secrets.AZURE_CLIENT_SECRET }}" -eq "") { Write-Error "AZURE_CLIENT_SECRET is empty!" ; exit 1 }
+          if ("${{ secrets.AZURE_CLIENT_ID }}" -eq "") { Write-Error "AZURE_CLIENT_ID is empty!" ; exit 1 }
+          if ("${{ secrets.AZURE_TENANT_ID }}" -eq "") { Write-Error "AZURE_TENANT_ID is empty!" ; exit 1 }
+
           
       - name: Authenticate with Azure using PowerShell
         shell: pwsh
