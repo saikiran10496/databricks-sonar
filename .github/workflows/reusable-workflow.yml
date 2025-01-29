@@ -41,7 +41,6 @@ jobs:
         run: |
           pip install databricks-cli
           az extension add --name databricks
-
       - name: Debug Azure Secrets
         shell: pwsh
         run: |
