@@ -26,8 +26,18 @@ jobs:
   deploy:
     runs-on: windows-latest
     environment: DEV_WORKSPACE_NAME
-
-    steps:
+    steps:  # The secrets are now accessible within the steps
+      - name: Debug Secrets (Example - for debugging only)
+        shell: pwsh
+        run: |
+          Write-Host "DATABRICKS_DEV_HOST: $env:DATABRICKS_DEV_HOST"
+          Write-Host "DATABRICKS_DEV_TOKEN: $env:DATABRICKS_DEV_TOKEN"
+          Write-Host "AZURE_CLIENT_SECRET: $env:AZURE_CLIENT_SECRET"
+          Write-Host "AZURE_CLIENT_ID: $env:AZURE_CLIENT_ID"
+          Write-Host "AZURE_TENANT_ID: $env:AZURE_TENANT_ID"
+          Write-Host "DATABRICKS_PROD_HOST: $env:DATABRICKS_PROD_HOST"
+          Write-Host "DATABRICKS_PROD_TOKEN: $env:DATABRICKS_PROD_TOKEN"
+      
       - name: Checkout Repository
         uses: actions/checkout@v3
 
