@@ -55,50 +55,22 @@ jobs:
 
   deployToDatabricksDev:
     needs: sonarQubeAnalysis
-    runs-on: windows-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-      
-      - name: Set Secrets as Env Vars
-        run: |
-          echo "DATABRICKS_HOST=${{ secrets.DATABRICKS_DEV_HOST }}" >> $GITHUB_ENV
-          echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_DEV_TOKEN }}" >> $GITHUB_ENV
-          echo "AZURE_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
-          echo "AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
-
-      - name: Run Reusable Workflow
-        uses: ./.github/workflows/reusable-workflow.yml
-        with:
-          deploy_to: "DEV_WORKSPACE_NAME"
-          databricks_host: ${{ env.DATABRICKS_HOST }}
-          databricks_token: ${{ env.DATABRICKS_TOKEN }}
-          azure_client_secret: ${{ env.AZURE_CLIENT_SECRET }}
-          azure_client_id: ${{ env.AZURE_CLIENT_ID }}
-          azure_tenant_id: ${{ env.AZURE_TENANT_ID }}
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      deploy_to: "DEV_WORKSPACE_NAME"
+      databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}
+      databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
 
   deployToDatabricksProd:
     needs: deployToDatabricksDev
-    runs-on: windows-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-      
-      - name: Set Secrets as Env Vars
-        run: |
-          echo "DATABRICKS_HOST=${{ secrets.DATABRICKS_PROD_HOST }}" >> $GITHUB_ENV
-          echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_PROD_TOKEN }}" >> $GITHUB_ENV
-          echo "AZURE_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
-          echo "AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
-
-      - name: Run Reusable Workflow
-        uses: ./.github/workflows/reusable-workflow.yml
-        with:
-          deploy_to: "PROD_WORKSPACE_NAME"
-          databricks_host: ${{ env.DATABRICKS_HOST }}
-          databricks_token: ${{ env.DATABRICKS_TOKEN }}
-          azure_client_secret: ${{ env.AZURE_CLIENT_SECRET }}
-          azure_client_id: ${{ env.AZURE_CLIENT_ID }}
-          azure_tenant_id: ${{ env.AZURE_TENANT_ID }}
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      deploy_to: "PROD_WORKSPACE_NAME"
+      databricks_host: ${{ secrets.DATABRICKS_PROD_HOST }}
+      databricks_token: ${{ secrets.DATABRICKS_PROD_TOKEN }}
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
