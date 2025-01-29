@@ -56,6 +56,8 @@ jobs:
   deployToDatabricksDev:
     needs: sonarQubeAnalysis
     uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      deploy_to: "DEV_WORKSPACE_NAME" 
     secrets:
       databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}
       databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}
@@ -67,6 +69,8 @@ jobs:
   deployToDatabricksProd:
     needs: deployToDatabricksDev
     uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      deploy_to: "DEV_WORKSPACE_NAME" 
     secrets:
       databricks_host: ${{ secrets.DATABRICKS_PROD_HOST }}
       databricks_token: ${{ secrets.DATABRICKS_PROD_TOKEN }}
