@@ -58,6 +58,11 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "Dev"
+      databricks_host: ${{ secrets.DATABRICKS_DEV_HOST }}  # Input value (can be the secret itself)
+      databricks_token: ${{ secrets.DATABRICKS_DEV_TOKEN }}  # Input value (can be the secret itself)
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}  # Input value (can be the secret itself)
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}  # Input value (can be the secret itself)
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}  # Input value (can be the secret itself)
     secrets:
       DATABRICKS_DEV_HOST: ${{ secrets.DATABRICKS_DEV_HOST }}
       DATABRICKS_DEV_TOKEN: ${{ secrets.DATABRICKS_DEV_TOKEN }}
@@ -70,6 +75,11 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       deploy_to: "Prod"
+      databricks_host: ${{ secrets.DATABRICKS_PROD_HOST }}  # Input value (can be the secret itself)
+      databricks_token: ${{ secrets.DATABRICKS_PROD_TOKEN }}  # Input value (can be the secret itself)
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}  # Input value (can be the secret itself)
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}  # Input value (can be the secret itself)
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }} 
     secrets:
       DATABRICKS_PROD_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
       DATABRICKS_PROD_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
