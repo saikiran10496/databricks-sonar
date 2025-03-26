@@ -1,4 +1,4 @@
-name: SonarQube Analysis and Deployment
+name: SonarQube Analysis and Deployment ADB
 
 on:
   push:
