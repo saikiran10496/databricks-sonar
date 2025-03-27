@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v3
@@ -48,13 +50,13 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.organization=saikiran10496 \
-            -Dsonar.projectKey=saikiran10496_databricks-sonar \
+            -Dsonar.projectKey=databricks-sonar \
             -Dsonar.projectName=databricks-sonar \
             -Dsonar.projectVersion=1.0 \
             -Dsonar.python.coverage.reportPaths=coverage.xml \
-            -Dsonar.sources=notebooks \
+            -Dsonar.sources=notebooks 
             -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.python.version=3.x \
+            -Dsonar.python.version=3.x 
             -Dsonar.test.exclusions=tests/**
             -Dsonar.tests=tests
 
