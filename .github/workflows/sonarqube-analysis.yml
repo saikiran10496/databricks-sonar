@@ -15,15 +15,15 @@ jobs:
         with:
           fetch-depth: 0
 
-    #  - name: Set up Python
-     #   uses: actions/setup-python@v3
-      #  with:
-       #   python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
 
-    #  - name: Install Dependencies
-     #   run: |
-      #    pip install -r requirements.txt
-       #   pip install nbconvert pytest pytest-cov coverage
+      - name: Install Dependencies
+        run: |
+         # pip install -r requirements.txt
+          pip install nbconvert pytest pytest-cov coverage
 
      # - name: Convert Notebooks to Python scripts
       #  run: |
@@ -37,9 +37,9 @@ jobs:
     #    run: |
      #     echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
 
-     # - name: Run Tests with Coverage
-      #  run: |
-       #   pytest tests --cov=notebooks --cov-report=xml
+      - name: Run Tests with Coverage
+        run: |
+          pytest tests --cov=notebooks --cov-report=xml
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
