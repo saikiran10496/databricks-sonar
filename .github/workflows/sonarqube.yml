@@ -62,7 +62,7 @@ jobs:
         #  wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
          # unzip sonar-scanner-cli-4.8.0.2856-linux.zip
           #export PATH="$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin"
-          #sonar-scanner -Dsonar.projectKey=databricks_project \
+          #sonar-scanner -Dsonar.projectKey=saikiran10496_databricks-sonar \
            #             -Dsonar.projectName=DatabricksProject \
             #            -Dsonar.projectVersion=1.0 \
              #           -Dsonar.sources=notebooks \
