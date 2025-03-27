@@ -33,9 +33,9 @@ jobs:
           #done
           #ls notebooks
 
-      - name: Set PYTHONPATH
-        run: |
-          echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
+     # - name: Set PYTHONPATH
+    #    run: |
+     #     echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
 
      # - name: Run Tests with Coverage
       #  run: |
