@@ -47,8 +47,8 @@ jobs:
         with:
           projectBaseDir: .
           args: >
-            -Dsonar.organization=your-organization-key
-            -Dsonar.projectKey=your-project-key
+            -Dsonar.organization=saikiran10496
+            -Dsonar.projectKey=saikiran10496_databricks-sonar
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=notebooks
             -Dsonar.test.exclusions=tests/**
