@@ -25,17 +25,17 @@ jobs:
          # pip install -r requirements.txt
           pip install nbconvert pytest pytest-cov coverage
 
-     # - name: Convert Notebooks to Python scripts
-      #  run: |
-       #   jupyter nbconvert --to script notebooks/*.ipynb --output-dir notebooks
-        #  for file in notebooks/*.txt; do
-         #   mv "$file" "${file%.txt}.py"
-          #done
-          #ls notebooks
+      - name: Convert Notebooks to Python scripts
+        run: |
+          jupyter nbconvert --to script notebooks/*.ipynb --output-dir notebooks
+          for file in notebooks/*.txt; do
+            mv "$file" "${file%.txt}.py"
+          done
+          ls notebooks
 
-     # - name: Set PYTHONPATH
-    #    run: |
-     #     echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
+      - name: Set PYTHONPATH
+        run: |
+          echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
 
       - name: Run Tests with Coverage
         run: |
