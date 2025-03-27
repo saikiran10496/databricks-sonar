@@ -45,14 +45,8 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.organization=saikiran10496 \
-            -Dsonar.python.coverage.reportPaths=coverage.xml \
-            -Dsonar.sources=notebooks \
-            -Dsonar.python.version=3.x
-            -Dsonar.host.url=https://sonarcloud.io/organizations/saikiran10496/projects \
+       
+           
             
 
       #- name: Run SonarScanner
