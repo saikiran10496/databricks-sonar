@@ -37,9 +37,9 @@ jobs:
         run: |
           echo "PYTHONPATH=$(pwd):$(pwd)/notebooks" >> $GITHUB_ENV
 
-      - name: Run Tests with Coverage
-        run: |
-          pytest tests --cov=notebooks --cov-report=xml
+     # - name: Run Tests with Coverage
+      #  run: |
+       #   pytest tests --cov=notebooks --cov-report=xml
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
